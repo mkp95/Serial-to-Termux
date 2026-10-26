@@ -1,9 +1,9 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.mkp95.serialtotermux">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="io.mkp95.serialtotermux">
     <uses-feature android:name="android.hardware.usb.host" android:required="true" />
     <uses-permission android:name="android.permission.INTERNET" />
     <application android:allowBackup="false" android:label="Serial to Termux"
         android:theme="@android:style/Theme.Material.Light.NoActionBar">
-        <activity android:name="com.mkp95.serialtotermux.MainActivity" android:exported="true">
+        <activity android:name="io.mkp95.serialtotermux.MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
