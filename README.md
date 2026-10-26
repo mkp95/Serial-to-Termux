@@ -1,6 +1,6 @@
 # Serial-to-Termux
 
-Minimal pure-Java Android USB serial bridge for non-rooted Android phones.
+Minimal pure-Java Android USB serial bridge for non-rooted Android phones.\n\n- Application ID: `io.mkp95.serialtotermux`\n- Minimum Android version: Android 10 (API 29).
 
 - No Gradle or Kotlin.
 - Android SDK command-line build (`aapt`, `javac`, `d8`, `zipalign`, `apksigner`).
