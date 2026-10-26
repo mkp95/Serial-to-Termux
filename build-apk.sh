@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
-
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 cd "$ROOT"
-
-: "${ANDROID_HOME:?`ANDROID_HOME` must point to the Android SDK}"
+: "${ANDROID_HOME:?ANDROID_HOME must point to the Android SDK}"
 BUILD_TOOLS_VERSION="${BUILD_TOOLS_VERSION:-35.0.0}"
 PLATFORM_VERSION="${PLATFORM_VERSION:-35}"
 BT="$ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION"
@@ -14,7 +12,6 @@ LIB="$WORK/lib"
 CLASSES="$WORK/classes"
 DEX="$WORK/dex"
 mkdir -p "$LIB" "$CLASSES" "$DEX" "$ROOT/dist"
-
 for tool in aapt d8 zipalign apksigner; do
   test -x "$BT/$tool" || { echo "Missing SDK tool: $BT/$tool" >&2; exit 2; }
 done
@@ -28,16 +25,14 @@ unzip -p "$LIB/usb-serial.aar" classes.jar > "$LIB/usb-serial.jar"
   --min-sdk-version 23 --target-sdk-version 28 -F "$WORK/base.apk"
 
 find app/src/main/java -name '*.java' -print0 | xargs -0 javac \
-  -source 8 -target 8 -encoding UTF-8 -bootclasspath "$ANDROID_JAR" \
-  -classpath "$LIB/usb-serial.jar" -d "$CLASSES"
+  -source 8 -target 8 -encoding UTF-8 \
+  -classpath "$ANDROID_JAR:$LIB/usb-serial.jar" -d "$CLASSES"
 
 jar cf "$WORK/app-classes.jar" -C "$CLASSES" .
 "$BT/d8" --lib "$ANDROID_JAR" --output "$DEX" "$WORK/app-classes.jar" "$LIB/usb-serial.jar"
-
 cp "$WORK/base.apk" "$WORK/unsigned.apk"
 (cd "$DEX" && zip -q "$WORK/unsigned.apk" classes.dex)
 "$BT/zipalign" -f 4 "$WORK/unsigned.apk" "$WORK/aligned.apk"
-
 KEYSTORE="$WORK/debug.keystore"
 if [ ! -f "$KEYSTORE" ]; then
   keytool -genkeypair -keystore "$KEYSTORE" -storepass android -keypass android \
