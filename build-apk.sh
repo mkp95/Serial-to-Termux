@@ -22,7 +22,7 @@ curl --fail --location --retry 3 "$AAR_URL" -o "$LIB/usb-serial.aar"
 unzip -p "$LIB/usb-serial.aar" classes.jar > "$LIB/usb-serial.jar"
 
 "$BT/aapt" package -f -M app/src/main/AndroidManifest.xml -I "$ANDROID_JAR" \
-  --min-sdk-version 23 --target-sdk-version 28 -F "$WORK/base.apk"
+  --min-sdk-version 29 --target-sdk-version 35 -F "$WORK/base.apk"
 
 find app/src/main/java -name '*.java' -print0 | xargs -0 javac \
   -source 8 -target 8 -encoding UTF-8 \
